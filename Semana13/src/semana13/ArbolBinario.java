@@ -1,12 +1,37 @@
 package semana13;
 
 public class ArbolBinario {
+
     Nodo raiz;
+
+    public Nodo agregarRecursivo(Nodo actual, int valor) {
+        if (actual == null) {
+            return new Nodo(valor);
+        }
+
+        if (valor < actual.valor) {
+            actual.izquierdo = agregarRecursivo(actual.izquierdo, valor);
+
+        } else if (valor > actual.valor) {
+            actual.derecho = agregarRecursivo(actual.derecho, valor);
+
+        } else {
+            System.out.printf("El número (%d) ya existe en el Árbol Binario!\n\n",
+                    valor);
+            return actual;
+        }
+
+        return actual;
+    }
+
+    public void agregar(int valor) {
+        raiz = agregarRecursivo(raiz, valor);
+    }
 
     private Nodo eliminarRecursivo(Nodo actual, int valor) {
         if (actual == null) {
             return null;
-            
+
         } else if (valor == actual.valor) {
             if (actual.izquierdo == null && actual.derecho == null) {
                 return null;
@@ -24,11 +49,11 @@ public class ArbolBinario {
             actual.valor = valorMasPequeño;
             actual.derecho = eliminarRecursivo(actual.derecho, valorMasPequeño);
             return actual;
-            
+
         } else if (valor < actual.valor) {
             actual.izquierdo = eliminarRecursivo(actual.izquierdo, valor);
             return actual;
-            
+
         } else {
             actual.derecho = eliminarRecursivo(actual.derecho, valor);
             return actual;
@@ -48,48 +73,34 @@ public class ArbolBinario {
 
     public void eliminar(int valor) {
         raiz = eliminarRecursivo(raiz, valor);
-    
-    Node root;
-
-    private Node deleteRecursive(Node current, int value) {
-        if (current == null) {
-            return null;
-        }
-
-        if (value == current.value) {
-            if (current.left == null && current.right == null) {
-                return null;
-            }
-
-            if (current.right == null) {
-                return current.left;
-            }
-
-            if (current.left == null) {
-                return current.right;
-            }
-
-            int smallestValue = findSmallestValue(current.right);
-            current.value = smallestValue;
-            current.right = deleteRecursive(current.right, smallestValue);
-            return current;
-        }
-
-        if (value < current.value) {
-            current.left = deleteRecursive(current.left, value);
-            return current;
-        }
-
-        current.right = deleteRecursive(current.right, value);
-        return current;
+        System.out.printf("El número (%d) ha sido eliminado!\n", valor);
     }
 
-    private int findSmallestValue(Node root) {
-        return root.left == null ? root.value : findSmallestValue(root.left);
+    public void recorridoPreOrden(Nodo nodo) {
+        if (nodo != null) {
+            System.out.printf(" (%d) ", nodo.valor);
+            recorridoPreOrden(nodo.izquierdo);
+            recorridoPreOrden(nodo.derecho);
+        }
+
     }
 
-    public void delete(int value) {
-        root = deleteRecursive(root, value);
+    public void recorridoEnOrden(Nodo nodo) {
+        if (nodo != null) {
+            recorridoEnOrden(nodo.izquierdo);
+            System.out.printf(" (%d) ", nodo.valor);
+            recorridoEnOrden(nodo.derecho);
+        }
+
+    }
+
+    public void recorridoPostOrden(Nodo nodo) {
+        if (nodo != null) {
+            recorridoPostOrden(nodo.izquierdo);
+            recorridoPostOrden(nodo.derecho);
+            System.out.printf(" (%d) ", nodo.valor);
+        }
+
     }
 
 }
